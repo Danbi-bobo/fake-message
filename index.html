@@ -326,7 +326,7 @@
             align-items: center;
             justify-content: center;
             margin-right: 8px;
-            margin-left: -16px;
+            margin-left: -6px;
             margin-bottom: 2px;
             border: 2px solid #fff;
         }
@@ -507,21 +507,21 @@
             padding: 8px 8px;
             background: #fff;
             border-top: 1px solid #f0f2f5;
-            gap: 8px;
+            gap: 6px;
             min-height: 56px;
             flex-shrink: 0;
         }
 
         .input-btn {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             background: #ffffff;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #1877f2;
-            font-size: 18px;
+            font-size: 16px;
             border: none;
             cursor: pointer;
             flex-shrink: 0;
@@ -536,8 +536,9 @@
             font-size: 15px;
             outline: none;
             margin: 0 4px;
-            min-width: 0;
+            min-width: 80px;
             min-height: 20px;
+            width: auto;
         }
 
         .download-section {
@@ -659,16 +660,12 @@
                 <div style="margin-top: 15px;">
                     <p><strong>Giải thích các cột:</strong></p>
                     <ul style="text-align: left; font-size: 13px;">
-                        <li><strong>screen_id:</strong> ⭐ BẮT BUỘC - ID màn hình (các dòng cùng ID sẽ thuộc 1 màn hình)
-                        </li>
+                        <li><strong>screen_id:</strong> ⭐ BẮT BUỘC - ID màn hình (các dòng cùng ID sẽ thuộc 1 màn hình)</li>
                         <li><strong>contact_name:</strong> ⭐ BẮT BUỘC - Tên người chat</li>
-                        <li><strong>avatar_url:</strong> 🔧 TÙY CHỌN - Link ảnh avatar (để trống sẽ dùng avatar đẹp mặc
-                            định)</li>
-                        <li><strong>user_status:</strong> 🔧 TÙY CHỌN - Trạng thái (Đang hoạt động, Hoạt động 5 phút
-                            trước, v.v.)</li>
+                        <li><strong>avatar_url:</strong> 🔧 TÙY CHỌN - Link ảnh avatar (để trống sẽ dùng avatar đẹp mặc định)</li>
+                        <li><strong>user_status:</strong> 🔧 TÙY CHỌN - Trạng thái (Đang hoạt động, Hoạt động 5 phút trước, v.v.)</li>
                         <li><strong>message_text:</strong> ⭐ BẮT BUỘC - Nội dung tin nhắn HOẶC link ảnh</li>
-                        <li><strong>sender:</strong> ⭐ BẮT BUỘC - me (tin nhắn của tôi) hoặc other (tin nhắn của người
-                            kia)</li>
+                        <li><strong>sender:</strong> ⭐ BẮT BUỘC - me (tin nhắn của tôi) hoặc other (tin nhắn của người kia)</li>
                         <li><strong>time_display:</strong> 🔧 TÙY CHỌN - Thời gian hiển thị (VD: 14:30, 12 THG 7)</li>
                         <li><strong>show_time:</strong> 🔧 TÙY CHỌN - TRUE/FALSE - có hiển thị thời gian không</li>
                         <li><strong>message_type:</strong> 🆕 MỚI - "text" (mặc định) hoặc "image" (để gửi ảnh)</li>
@@ -730,10 +727,10 @@
         <div class="download-section" id="downloadSection" style="display: none;">
             <div class="download-options">
                 <button class="btn btn-download" onclick="downloadSelectedScreens()">
-                    <i class="fas fa-download"></i> Download màn hình đã chọn
+                    <i class="fas fa-download"></i> Download màn hình đã chọn (từng file)
                 </button>
                 <button class="btn btn-download" onclick="downloadAllScreens()">
-                    <i class="fas fa-download"></i> Download tất cả
+                    <i class="fas fa-download"></i> Download tất cả (từng file)
                 </button>
             </div>
             <div class="loading" id="loading">
@@ -761,14 +758,14 @@
                     if (file.name.endsWith('.csv')) {
                         data = parseCSV(e.target.result);
                     } else {
-                        const workbook = XLSX.read(e.target.result, {
+                        const workbook = XLSX.read(e.target.result, { 
                             type: 'binary',
                             cellDates: true,
                             cellStyles: false
                         });
                         const sheetName = workbook.SheetNames[0];
                         const worksheet = workbook.Sheets[sheetName];
-
+                        
                         data = XLSX.utils.sheet_to_json(worksheet, {
                             raw: false,
                             defval: '',
@@ -800,7 +797,7 @@
             const lines = text.split('\n');
             const headers = lines[0].split(',').map(h => h.trim());
             const data = [];
-
+            
             for (let i = 1; i < lines.length; i++) {
                 if (lines[i].trim()) {
                     const values = lines[i].split(',');
@@ -822,22 +819,22 @@
             if (!data || data.length === 0) {
                 throw new Error('File không có dữ liệu');
             }
-
+            
             const firstRow = data[0];
             console.log('DEBUG - First row:', firstRow);
             console.log('DEBUG - Available columns:', Object.keys(firstRow));
-
+            
             // CHỈ validate các cột thực sự bắt buộc
             const requiredColumns = ['screen_id', 'contact_name', 'message_text', 'sender'];
             const availableColumns = Object.keys(firstRow);
             const missingColumns = requiredColumns.filter(col => !availableColumns.includes(col));
-
+            
             if (missingColumns.length > 0) {
                 throw new Error(`Thiếu các cột bắt buộc: ${missingColumns.join(', ')}\nCác cột hiện có: ${availableColumns.join(', ')}`);
             }
-
+            
             console.log('✅ Validation passed - All required columns found');
-
+            
             // Danh sách avatar mặc định đẹp
             const defaultAvatars = [
                 'https://images.unsplash.com/photo-1494790108755-2616b612b665?w=150&h=150&fit=crop&crop=face',
@@ -853,7 +850,7 @@
                 if (!screenMap.has(screenId)) {
                     // Xử lý avatar_url - KHÔNG validation, chỉ sử dụng
                     let avatarUrl = row.avatar_url || row['avatar_url'] || row.avatarUrl;
-
+                    
                     // Kiểm tra nếu avatar_url là rỗng hoặc không hợp lệ
                     if (!avatarUrl || avatarUrl.trim() === '' || avatarUrl === '""' || avatarUrl === "''") {
                         // Chọn avatar mặc định dựa trên screen_id
@@ -887,7 +884,7 @@
             // Convert to array and sort
             screens = Array.from(screenMap.values()).sort((a, b) => a.id - b.id);
             selectedScreens.clear();
-
+            
             console.log(`✅ Đã xử lý ${screens.length} màn hình thành công!`);
 
             renderScreens();
@@ -1031,10 +1028,10 @@
           <div class="msg-row ${message.sender}">
             ${message.sender === 'other' ? `<img src="${avatarUrl}" class="msg-avatar" alt="Avatar" onerror="this.src='https://th.bing.com/th/id/OIP.IlrrnM9UiiG5HFqcixNYoAHaHa?cb=iwc2&rs=1&pid=ImgDetMain'">` : ''}
             <div class="bubble ${message.type === 'image' ? 'image-bubble' : ''}">
-              ${message.type === 'image' ?
-                        `<img src="${message.text}" alt="Shared image" class="message-image" onerror="this.style.display='none'; this.parentNode.innerHTML='❌ Không thể tải ảnh';" />` :
-                        message.text
-                    }
+              ${message.type === 'image' ? 
+                `<img src="${message.text}" alt="Shared image" class="message-image" onerror="this.style.display='none'; this.parentNode.innerHTML='❌ Không thể tải ảnh';" />` : 
+                message.text
+              }
             </div>
           </div>
         `;
@@ -1060,9 +1057,11 @@
                 const canvas = await html2canvas(element, {
                     backgroundColor: '#ffffff',
                     scale: 2,
-                    width: 360,
-                    height: 600,
-                    useCORS: true
+                    useCORS: true,
+                    allowTaint: true,
+                    foreignObjectRendering: true,
+                    logging: false,
+                    removeContainer: true
                 });
 
                 canvas.toBlob(blob => {
@@ -1130,12 +1129,12 @@
                                 const link = document.createElement('a');
                                 link.href = URL.createObjectURL(blob);
                                 link.download = `${String(screenId).padStart(3, '0')}-${screen.contactName.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
-
+                                
                                 // Trigger download
                                 document.body.appendChild(link);
                                 link.click();
                                 document.body.removeChild(link);
-
+                                
                                 // Cleanup
                                 URL.revokeObjectURL(link.href);
                                 successCount++;
@@ -1166,7 +1165,6 @@
                 loading.style.display = 'none';
             }
         }
-
 
         function downloadSampleFile() {
             const sampleData = [
@@ -1261,7 +1259,7 @@
             ];
 
             const ws = XLSX.utils.json_to_sheet(sampleData);
-
+            
             // Set column widths
             const colWidths = [
                 { wch: 10 }, // screen_id
@@ -1275,16 +1273,16 @@
                 { wch: 12 }  // message_type
             ];
             ws['!cols'] = colWidths;
-
+            
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Sample Data");
-
+            
             // Generate file name with timestamp
             const timestamp = new Date().toISOString().slice(0, 10);
             const fileName = `messenger-sample-data-with-images-${timestamp}.xlsx`;
-
+            
             XLSX.writeFile(wb, fileName);
-
+            
             // Show success message
             setTimeout(() => {
                 alert('✅ Đã tải file Excel mẫu thành công!\n\n📁 File name: ' + fileName + '\n📊 Dữ liệu: 2 màn hình, 8 tin nhắn (có cả text và image)\n\n💡 File này chứa ví dụ về cách gửi ảnh trong cuộc trò chuyện!');
