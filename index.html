@@ -325,7 +325,7 @@
             align-items: center;
             justify-content: center;
             margin-right: 8px;
-            margin-left: -6px;
+            margin-left: -16px;
             margin-bottom: 2px;
             border: 2px solid #fff;
         }
@@ -503,24 +503,24 @@
         .input-container {
             display: flex;
             align-items: center;
-            padding: 8px 8px;
+            padding: 6px 8px;
             background: #fff;
             border-top: 1px solid #f0f2f5;
-            gap: 6px;
-            min-height: 56px;
+            gap: 4px;
+            min-height: 50px;
             flex-shrink: 0;
         }
 
         .input-btn {
-            width: 28px;
-            height: 28px;
+            width: 26px;
+            height: 26px;
             background: #ffffff;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #1877f2;
-            font-size: 16px;
+            font-size: 18px;
             border: none;
             cursor: pointer;
             flex-shrink: 0;
@@ -531,15 +531,22 @@
             background: #f0f2f5;
             border: none;
             border-radius: 20px;
-            padding: 8px 15px;
-            font-size: 15px;
+            padding: 6px 8px !important;
+            font-size: 14px !important;
             outline: none;
-            margin: 0 4px;
-            min-width: 80px;
-            min-height: 20px;
-            width: auto;
+            margin: 0 6px !important;
+            min-width: 120px !important;
+            height: 36px !important;
+            line-height: 16px !important;
+            color: #646363 !important;
+            font-weight: normal !important;
         }
 
+        .input-box::placeholder {
+            color: #65676b !important;
+            font-weight: normal !important;
+            opacity: 1 !important;
+        }
         .download-section {
             text-align: center;
             background: white;
